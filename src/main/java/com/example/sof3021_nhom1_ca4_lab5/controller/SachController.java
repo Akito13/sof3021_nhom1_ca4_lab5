@@ -34,9 +34,7 @@ public class SachController {
 //        p.filter(integer -> integer >= 0 && integer < ).orElse(0);
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page<Sach> page = sachDao.findAll(pageable);
-        System.out.println("Content size: " + page.getContent().size());
         model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
         return "page";
     }
 }
