@@ -37,7 +37,6 @@ public class SachController {
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page<Sach> page = sachDao.findAll(pageable);
         model.addAttribute("page", page);
-        model.addAttribute("list", page.getContent());
         return "page";
     }
 
