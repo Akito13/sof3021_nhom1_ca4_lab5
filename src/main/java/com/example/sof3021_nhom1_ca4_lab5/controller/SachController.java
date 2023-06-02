@@ -9,10 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -34,9 +36,30 @@ public class SachController {
 //        p.filter(integer -> integer >= 0 && integer < ).orElse(0);
         Pageable pageable = PageRequest.of(p.orElse(0), 5);
         Page<Sach> page = sachDao.findAll(pageable);
-        System.out.println("Content size: " + page.getContent().size());
         model.addAttribute("page", page);
         model.addAttribute("list", page.getContent());
         return "page";
+    }
+
+    @RequestMapping("/sach/detail/{id}")
+    public String getSachDetail(@PathVariable("id") Optional<Integer> maSach,
+                                Model model) {
+
+        maSach.ifPresentOrElse(i -> {
+            Map<Integer, Sach> sachMap = sachDao.findByIdAndGiaMap(i);
+            if(sachMap.isEmpty()) {
+                model.addAttribute("error", "Không tìm thấy sách!");
+            } else {
+                Sach sach = sachMap.get(i);
+                sachMap.remove(i);
+                if(sach != null) {
+                    model.addAttribute("sach", sach);
+                    model.addAttribute("list", sachMap);
+                } else {
+                    model.addAttribute("error", "Không tìm thấy sách !!");
+                }
+            }
+        }, () -> model.addAttribute("error", "Không có id để kiếm sách"));
+        return "them";
     }
 }
