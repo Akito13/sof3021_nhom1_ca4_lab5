@@ -29,14 +29,16 @@
           <th>Price</th>
           <th>Date</th>
         </tr>
-    <c:forEach var="sach" items="${page.content}">
-        <tr>
-          <td>${sach.masach}</td>
-          <td>${sach.tensach}</td>
-          <td>${sach.gia}</td>
-          <td>${sach.nxb}</td>
-        </tr>
-    </c:forEach>
+        <c:forEach var="sach" items="${page.content}">
+            <tr>
+              <td>${sach.masach}</td>
+              <td>
+                  <a href="${pageContext.request.contextPath}/sach/detail/${sach.masach}">${sach.tensach}</a>
+              </td>
+              <td>${sach.gia}</td>
+              <td>${sach.nxb}</td>
+            </tr>
+        </c:forEach>
     </table>
 
     <a href="${pageContext.request.contextPath}/sach/page?p=0">First</a>
